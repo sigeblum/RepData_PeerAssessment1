@@ -4,41 +4,50 @@ output:
   html_document:
     keep_md: true
 ---
-```{r load libraries, echo=FALSE, include=FALSE}
-library(dplyr)
-library(lubridate)
-library(readr)
-library(ggplot2)
-```
+
 
 
 ## Loading and preprocessing the data
-```{r load data, echo=TRUE}
+
+```r
 activity <- read.csv("activity.csv", stringsAsFactors = FALSE)
 # convert date string to date using lubridate
 activity$date <- ymd(activity$date)
-
 ```
 
 
 
 ## What is mean total number of steps taken per day?
-```{r mean per day, echo = TRUE}
+
+```r
 activity <- group_by(activity, date)
 steps_perday <- aggregate(activity[c("steps", "interval")], by = list(as.factor(activity$date)), sum)
 
 # create histogram
 ggplot(steps_perday, aes(steps)) + geom_histogram() + xlab("steps per day")
+```
 
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 8 rows containing non-finite values (stat_bin).
+```
+
+![](PA1_template_files/figure-html/mean per day-1.png)<!-- -->
+
+```r
 mean_perday <- round(mean(steps_perday$steps, na.rm = TRUE), 2)
 median_perday <- median(steps_perday$steps, na.rm = TRUE)
 
 activity <- as.data.frame(ungroup(activity))
 ```
-The mean per day is `r as.character(mean_perday)` and the median is `r median_perday`.
+The mean per day is 10766.19 and the median is 10765.
 
 ## What is the average daily activity pattern?
-```{r daily activity pattern, echo=TRUE}
+
+```r
 activity <- group_by(activity, interval)
 steps_perinterval <- aggregate(activity[c("steps")], by = list(interval = activity$interval), mean, na.rm = TRUE)
 
@@ -48,24 +57,30 @@ timeseries <- parse_time(timeseries[1:length(timeseries)-1], "%H%M")
 steps_perinterval$timeseries <- timeseries
 
 ggplot(steps_perinterval, aes(timeseries, steps)) + geom_line()
+```
 
+![](PA1_template_files/figure-html/daily activity pattern-1.png)<!-- -->
+
+```r
 # find interval with max average steps
 idx <- which.max(steps_perinterval$steps)
 maxinterval <- steps_perinterval$timeseries[idx]
 
 activity <- ungroup(activity)
 ```
-The most steps occur on average in the 5 minutes after `r as.character(maxinterval)`.
+The most steps occur on average in the 5 minutes after 08:35:00.
 
 
 ## Imputing missing values
-```{r missing values, echo = TRUE}
+
+```r
 na <- sum(is.na(activity$steps))
 ```
-Of the `r nrow(activity)` step entries `r na` are missing, that is `r round(mean(is.na(activity$steps))*100, 2)`%.  
+Of the 17568 step entries 2304 are missing, that is 13.11%.  
 
 The missing values in the raw data will be filled with the mean number of steps for the corresponding time interval.
-```{r fill nas, echo=TRUE}
+
+```r
 activity_filled <- activity
 for (i in 1:nrow(activity)) {
     if (is.na(activity$steps[i])==TRUE){
@@ -78,22 +93,37 @@ steps_perday_filled <- aggregate(activity_filled[c("steps")], by = list(as.facto
 
 # create histogram
 ggplot(steps_perday_filled, aes(steps)) + geom_histogram() + xlab("steps per day")
+```
 
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+![](PA1_template_files/figure-html/fill nas-1.png)<!-- -->
+
+```r
 mean_perday_filled <- round(mean(steps_perday_filled$steps, na.rm = TRUE), 2)
 median_perday_filled <- median(steps_perday_filled$steps, na.rm = TRUE)
 
 comp <- data.frame("mean" = c(mean_perday, mean_perday_filled), "median" = c(median_perday, median_perday_filled), row.names = c("with na", "imputed na"))
 ```
 
-```{r table output, echo = TRUE, results = "asis"}
+
+```r
 library(knitr)
 kable(comp)
 ```
+
+                  mean     median
+-----------  ---------  ---------
+with na       10766.19   10765.00
+imputed na    10766.19   10766.19
 The results dont have an effect on the mean per day, and only a minor effect on the median.  
 The total number of steps per day is affected because the imputed valus are added to the number of total steps.
 
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r day of the week, echo = TRUE}
+
+```r
 activity <- mutate(activity, "weekday" = weekdays(activity$date, 1))
 
 wd_we <- c()
@@ -109,4 +139,10 @@ activity <- mutate(activity, "we_wd" = as.factor(wd_we))
 
 ggplot(activity, aes(interval, steps)) + geom_line() + facet_grid(we_wd ~ .)
 ```
+
+```
+## Warning: Removed 1 rows containing missing values (geom_path).
+```
+
+![](PA1_template_files/figure-html/day of the week-1.png)<!-- -->
 
