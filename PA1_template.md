@@ -35,7 +35,7 @@ ggplot(steps_perday, aes(steps)) + geom_histogram() + xlab("steps per day")
 ## Warning: Removed 8 rows containing non-finite values (stat_bin).
 ```
 
-![](PA1_template_files/figure-html/mean per day-1.png)<!-- -->
+![](PA1_template_files/figure-html/mean_per_day-1.png)<!-- -->
 
 ```r
 mean_perday <- round(mean(steps_perday$steps, na.rm = TRUE), 2)
@@ -59,7 +59,7 @@ steps_perinterval$timeseries <- timeseries
 ggplot(steps_perinterval, aes(timeseries, steps)) + geom_line()
 ```
 
-![](PA1_template_files/figure-html/daily activity pattern-1.png)<!-- -->
+![](PA1_template_files/figure-html/daily_activity_pattern-1.png)<!-- -->
 
 ```r
 # find interval with max average steps
@@ -99,7 +99,7 @@ ggplot(steps_perday_filled, aes(steps)) + geom_histogram() + xlab("steps per day
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![](PA1_template_files/figure-html/fill nas-1.png)<!-- -->
+![](PA1_template_files/figure-html/fill_nas-1.png)<!-- -->
 
 ```r
 mean_perday_filled <- round(mean(steps_perday_filled$steps, na.rm = TRUE), 2)
@@ -144,5 +144,5 @@ ggplot(activity, aes(interval, steps)) + geom_line() + facet_grid(we_wd ~ .)
 ## Warning: Removed 1 rows containing missing values (geom_path).
 ```
 
-![](PA1_template_files/figure-html/day of the week-1.png)<!-- -->
+![](PA1_template_files/figure-html/day_of_the_week-1.png)<!-- -->
 

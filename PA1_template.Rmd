@@ -14,7 +14,7 @@ library(knitr)
 
 
 ## Loading and preprocessing the data
-```{r load data, echo=TRUE}
+```{r load_data, echo=TRUE}
 activity <- read.csv("activity.csv", stringsAsFactors = FALSE)
 # convert date string to date using lubridate
 activity$date <- ymd(activity$date)
@@ -24,7 +24,7 @@ activity$date <- ymd(activity$date)
 
 
 ## What is mean total number of steps taken per day?
-```{r mean per day, echo = TRUE}
+```{r mean_per_day, echo = TRUE}
 activity <- group_by(activity, date)
 steps_perday <- aggregate(activity[c("steps", "interval")], by = list(as.factor(activity$date)), sum)
 
@@ -39,7 +39,7 @@ activity <- as.data.frame(ungroup(activity))
 The mean per day is `r as.character(mean_perday)` and the median is `r median_perday`.
 
 ## What is the average daily activity pattern?
-```{r daily activity pattern, echo=TRUE}
+```{r daily_activity_pattern, echo=TRUE}
 activity <- group_by(activity, interval)
 steps_perinterval <- aggregate(activity[c("steps")], by = list(interval = activity$interval), mean, na.rm = TRUE)
 
@@ -60,13 +60,13 @@ The most steps occur on average in the 5 minutes after `r as.character(maxinterv
 
 
 ## Imputing missing values
-```{r missing values, echo = TRUE}
+```{r missing_values, echo = TRUE}
 na <- sum(is.na(activity$steps))
 ```
 Of the `r nrow(activity)` step entries `r na` are missing, that is `r round(mean(is.na(activity$steps))*100, 2)`%.  
 
 The missing values in the raw data will be filled with the mean number of steps for the corresponding time interval.
-```{r fill nas, echo=TRUE}
+```{r fill_nas, echo=TRUE}
 activity_filled <- activity
 for (i in 1:nrow(activity)) {
     if (is.na(activity$steps[i])==TRUE){
@@ -86,7 +86,7 @@ median_perday_filled <- median(steps_perday_filled$steps, na.rm = TRUE)
 comp <- data.frame("mean" = c(mean_perday, mean_perday_filled), "median" = c(median_perday, median_perday_filled), row.names = c("with na", "imputed na"))
 ```
 
-```{r table output, echo = TRUE, results = "asis"}
+```{r table_output, echo = TRUE, results = "asis"}
 kable(comp)
 ```
   
@@ -94,7 +94,7 @@ The results dont have an effect on the mean per day, and only a minor effect on 
 The total number of steps per day is affected because the imputed valus are added to the number of total steps.
 
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r day of the week, echo = TRUE}
+```{r day_of_the_week, echo = TRUE}
 activity <- mutate(activity, "weekday" = weekdays(activity$date, 1))
 
 wd_we <- c()
