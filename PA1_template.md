@@ -110,7 +110,6 @@ comp <- data.frame("mean" = c(mean_perday, mean_perday_filled), "median" = c(med
 
 
 ```r
-library(knitr)
 kable(comp)
 ```
 
@@ -118,6 +117,7 @@ kable(comp)
 -----------  ---------  ---------
 with na       10766.19   10765.00
 imputed na    10766.19   10766.19
+  
 The results dont have an effect on the mean per day, and only a minor effect on the median.  
 The total number of steps per day is affected because the imputed valus are added to the number of total steps.
 
