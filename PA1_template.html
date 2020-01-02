@@ -442,8 +442,7 @@ ggplot(steps_perday_filled, aes(steps)) + geom_histogram() + xlab(&quot;steps pe
 median_perday_filled &lt;- median(steps_perday_filled$steps, na.rm = TRUE)
 
 comp &lt;- data.frame(&quot;mean&quot; = c(mean_perday, mean_perday_filled), &quot;median&quot; = c(median_perday, median_perday_filled), row.names = c(&quot;with na&quot;, &quot;imputed na&quot;))</code></pre>
-<pre class="r"><code>library(knitr)
-kable(comp)</code></pre>
+<pre class="r"><code>kable(comp)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -463,18 +462,10 @@ kable(comp)</code></pre>
 <td align="right">10766.19</td>
 <td align="right">10766.19</td>
 </tr>
-<tr class="odd">
-<td>The results d</td>
-<td align="right">ont have an</td>
-<td align="right">effect on the mean per day, and only a minor effect on the median.</td>
-</tr>
-<tr class="even">
-<td>The total num</td>
-<td align="right">ber of step</td>
-<td align="right">s per day is affected because the imputed valus are added to the number of total steps.</td>
-</tr>
 </tbody>
 </table>
+<p>The results dont have an effect on the mean per day, and only a minor effect on the median.<br />
+The total number of steps per day is affected because the imputed valus are added to the number of total steps.</p>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>

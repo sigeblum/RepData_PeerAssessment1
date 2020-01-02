@@ -9,6 +9,7 @@ library(dplyr)
 library(lubridate)
 library(readr)
 library(ggplot2)
+library(knitr)
 ```
 
 
@@ -86,9 +87,9 @@ comp <- data.frame("mean" = c(mean_perday, mean_perday_filled), "median" = c(med
 ```
 
 ```{r table output, echo = TRUE, results = "asis"}
-library(knitr)
 kable(comp)
 ```
+  
 The results dont have an effect on the mean per day, and only a minor effect on the median.  
 The total number of steps per day is affected because the imputed valus are added to the number of total steps.
 
