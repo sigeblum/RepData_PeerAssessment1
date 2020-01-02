@@ -145,4 +145,5 @@ ggplot(activity, aes(interval, steps)) + geom_line() + facet_grid(we_wd ~ .)
 ```
 
 ![](PA1_template_files/figure-html/day_of_the_week-1.png)<!-- -->
-
+  
+It can be seen that on weekends there is a different movement pattern compared to weekdays.
